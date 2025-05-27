@@ -1,4 +1,5 @@
-import { GptMessage, MyMessage, TypingLoader } from '../../components';
+import { GptMessage, MyMessage, TextMessageBox, TypingLoader } from '../../components';
+
 const OrthographyPage = () => {
   return (
     <div className="chat-container">
@@ -14,6 +15,12 @@ const OrthographyPage = () => {
 
         </div>
       </div>
+
+      <TextMessageBox
+        onSendMessage={ message => console.log(message) }
+        placeHolder='Escribe aqui lo que deseas'
+        disableCorrections
+      />
     </div>
   )
 }
