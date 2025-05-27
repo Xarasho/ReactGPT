@@ -10,9 +10,7 @@ const OrthographyPage = () => {
 
           <MyMessage text="Hola Mundo" />
 
-          <div className='fade-in'>
-            <TypingLoader />
-          </div>
+          <TypingLoader className='fade-in'/>
 
         </div>
       </div>

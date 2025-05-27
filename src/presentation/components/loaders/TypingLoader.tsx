@@ -1,8 +1,12 @@
 import './TypingLoader.css';
 
-export const TypingLoader = () => {
+interface Props {
+  className?: string;
+}
+
+export const TypingLoader = ({ className }: Props) => {
   return (
-    <div className="typing">
+    <div className={`typing ${ className }`}>
       <span className="circle scaling"></span>
       <span className="circle scaling"></span>
       <span className="circle scaling"></span>
