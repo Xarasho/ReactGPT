@@ -7,7 +7,7 @@ export const orthographyUseCase = async ( prompt: string) => {
     const resp = await fetch(`${ import.meta.env.VITE_GPT_API }/orthography-check`, {
       method: 'POST',
       headers: {
-        'content-type': 'application-type'
+        'content-type': 'application/json'
       },
       body: JSON.stringify({ prompt })
     });
