@@ -13,7 +13,7 @@ interface Message {
   }
 }
 
-const OrthographyPage = () => {
+export const OrthographyPage = () => {
 
   const [isloading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -102,5 +102,3 @@ const OrthographyPage = () => {
     </div>
   )
 }
-
-export default OrthographyPage;

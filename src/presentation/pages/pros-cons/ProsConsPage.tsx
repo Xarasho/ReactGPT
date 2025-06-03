@@ -7,7 +7,7 @@ interface Message {
   isGpt: boolean;
 }
 
-const ProsConsPage = () => {
+export const ProsConsPage = () => {
 
   const [isloading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -69,5 +69,3 @@ const ProsConsPage = () => {
     </div>
   )
 }
-
-export default ProsConsPage;
