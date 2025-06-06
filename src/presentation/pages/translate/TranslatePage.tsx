@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { GptMessage, MyMessage, TypingLoader, TextMessageBoxSelect } from '../../components';
+import { translateTextUseCase } from '../../../core/use-cases';
 
 interface Message {
   text: string;
@@ -33,11 +34,13 @@ export const TranslatePage = () => {
 
     setMessages( (prev) => [...prev, { text: newMessage, isGpt: false}]);
 
-    //TODO: UseCase
-
+    const { ok, message } = await translateTextUseCase( text, selectedOption );
     setIsLoading(false);
+    if ( !ok ) {
+      return alert(message);
+    }
 
-    // Todo: Add message isGpt as true
+    setMessages( (prev) => [...prev, { text: message, isGpt: true}]);
 
   }
 
