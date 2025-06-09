@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { GptMessage, MyMessage, TypingLoader, TextMessageBoxSelect } from '../../components';
+import { GptMessage, MyMessage, TypingLoader, TextMessageBoxSelect, GptMessageAudio } from '../../components';
+import { textToAudioUseCase } from '../../../core/use-cases';
 
 const disclaimer = `## ¿Qué audio quieres generar hoy?
 * Todo el audio es generado es por IA
@@ -14,10 +15,20 @@ const voices = [
   { id: "shimmer", text: "Shimmer" },
 ]
 
-interface Message {
+interface TextMessage {
   text: string;
   isGpt: boolean;
+  type: 'text';
 }
+
+interface AudioMessage {
+  text: string;
+  isGpt: boolean;
+  audio: string;
+  type: 'audio'
+}
+
+type Message = TextMessage | AudioMessage;
 
 export const TextToAudioPage = () => {
 
@@ -27,11 +38,14 @@ export const TextToAudioPage = () => {
   const handlePost = async( text: string, selectedVoice: string ) => {
 
     setIsLoading(true);
-    setMessages( (prev) => [...prev, { text: text, isGpt: false}]);
-
-    //TODO: UseCase
-
+    setMessages( (prev) => [...prev, { text: text, isGpt: false, type: 'text'}]);
+    
+    const { ok, message, audioUrl } = await textToAudioUseCase(text, selectedVoice);
     setIsLoading(false);
+    
+    if ( !ok ) return;
+    
+    setMessages( (prev) => [...prev, { text: `${selectedVoice} -  ${message}`, isGpt: true, type: 'audio', audio: audioUrl! }]);
 
     // Todo: Add message isGpt as true
 
@@ -45,19 +59,23 @@ export const TextToAudioPage = () => {
           {/* Bienvenida */}
           <GptMessage text={disclaimer} />
 
-          {
-            messages.map( (message, index) => (
-              message.isGpt
-                ? (
-                  <GptMessage key={index} text="Esto es de OpenAI" />
-                )
-                : (
-                  <MyMessage key={index} text={message.text} />
-                )
-            ))
-          }
+          {messages.map( (message, index) => 
+            message.isGpt ? (
 
-          {/* <MyMessage text="Hola Mundo" /> */}
+              message.type === 'audio'
+              ? (
+                  <GptMessageAudio 
+                  key={index} 
+                  text={message.text} 
+                  audio={message.audio}
+                  />
+                ) : (
+                  <GptMessage key={index} text={message.text} />
+                )
+              ) : (
+                <MyMessage key={index} text={message.text} />
+              )
+            )}
 
           {
             isloading && (
