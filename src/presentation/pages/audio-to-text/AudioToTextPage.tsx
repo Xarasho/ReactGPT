@@ -23,9 +23,29 @@ export const AudioToTextPage = () => {
 
     if ( !resp ) return;
 
-    console.log({resp});
+    const gptMessage = `
+## Trascription:
+__Duration:__ ${ Math.round(resp.duration) } seconds
+### The text is:
+${ resp.text }
+`
 
-    // Todo: Add message isGpt as true
+    setMessages((prev) => [
+      ...prev,
+      {text: gptMessage, isGpt: true}
+    ]);
+
+    for ( const segment of resp.segments ) {
+      const segmentMessage = `
+__From ${ Math.round( segment.start ) } to ${ Math.round( segment.end ) } seconds:__
+${segment.text}
+`
+
+    setMessages((prev) => [
+      ...prev,
+      {text: segmentMessage, isGpt: true}
+    ]);
+  }
 
   }
 
@@ -41,10 +61,10 @@ export const AudioToTextPage = () => {
             messages.map( (message, index) => (
               message.isGpt
                 ? (
-                  <GptMessage key={index} text="Esto es de OpenAI" />
+                  <GptMessage key={index} text={message.text} />
                 )
                 : (
-                  <MyMessage key={index} text={message.text} />
+                  <MyMessage key={index} text={(message.text === '') ? 'Transcribe the audio' : message.text} />
                 )
             ))
           }
