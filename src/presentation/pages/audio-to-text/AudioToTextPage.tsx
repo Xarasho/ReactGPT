@@ -18,9 +18,12 @@ export const AudioToTextPage = () => {
     setMessages( (prev) => [...prev, { text: text, isGpt: false}]);
 
     //TODO: UseCase
-    await audioToTextUseCase(audioFile, text)
-
+    const resp = await audioToTextUseCase(audioFile, text)
     setIsLoading(false);
+
+    if ( !resp ) return;
+
+    console.log({resp});
 
     // Todo: Add message isGpt as true
 

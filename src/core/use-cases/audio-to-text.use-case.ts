@@ -1,19 +1,24 @@
-export const audioToTextUseCase = async (audioFile: File, prompt?: string) => {
+import type { AudioToTextResponse } from "../../interfaces";
 
-    console.log({audioFile, prompt})
-    // try {
+export const audioToTextUseCase = async (audioFile: File, prompt?: string) => {
   
-      // const resp = await fetch(`${ import.meta.env.VITE_GPT_API }/orthography-check`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'content-type': 'application/json'
-      //   },
-      //   body: JSON.stringify({ prompt })
-      // });
+  try {
+    
+    const formData = new FormData();
+    formData.append('file', audioFile);
+    if (prompt) {
+      formData.append('prompt', prompt);
+    } 
+  
+      const resp = await fetch(`${ import.meta.env.VITE_GPT_API }/audio-to-text`, {
+        method: 'POST',
+        body: formData,
+      });
   
       // if ( !resp.ok ) throw new Error('No se pudo realizar la corrección');
       
-      // const data = await resp.json() as OrthographyResponse;
+      const data = await resp.json() as AudioToTextResponse;
+      return data;
   
       // return {
       //   ok: true,
@@ -21,14 +26,14 @@ export const audioToTextUseCase = async (audioFile: File, prompt?: string) => {
       //   message: typeof data.message === 'string' ? data.message : ''
       // }
   
-    // } catch (error) {
-      // console.error('Orthography check failed:', error);
-  
+    } catch (error) {
+      console.log(error);
+      return null;
       // return {
       //   ok: false,
       //   userScore: 0,
       //   errors: [],
       //   message: 'No se pudo realizar la corrección'
       // }
-    // }
+    }
 }
