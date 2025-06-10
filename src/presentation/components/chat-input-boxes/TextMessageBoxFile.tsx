@@ -1,7 +1,7 @@
 import { useRef, useState, type FormEvent } from "react";
 
 interface Props {
-  onSendMessage: (message: string) => void;
+  onSendMessage: (message: string, file: File) => void;
   placeHolder?: string;
   disableCorrections?: boolean;
   accept?: string;
@@ -17,10 +17,12 @@ export const TextMessageBoxFile = ({ onSendMessage, placeHolder, disableCorrecti
   const handleSendMessage = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if ( message.trim().length === 0 ) return;
+    // if ( message.trim().length === 0 ) return;
+    if ( !selectedFile ) return; 
 
-    onSendMessage( message );
+    onSendMessage( message, selectedFile );
     setMessage('');
+    setSelectedFile(null);
   }
 
   return (
