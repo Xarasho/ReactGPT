@@ -26,7 +26,7 @@ export const imageGenerationUseCase = async (
 
     const { url, revisedPrompt: alt } = await resp.json();
 
-    console.log({url, alt})
+    // console.log({url, alt})
 
     return {url, alt};
 
