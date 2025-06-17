@@ -1,5 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import AssistantPage from "../pages/assistant/AssistantPage";
+import { AssistantPage } from "../pages/assistant/AssistantPage";
 import { AudioToTextPage } from "../pages/audio-to-text/AudioToTextPage";
 import { ImageGenerationPage } from "../pages/image-generation/ImageGenerationPage";
 import { ImageTunningPage } from "../pages/image-generation/ImageTunningPage";
